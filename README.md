@@ -260,7 +260,7 @@ classDiagram
 
 ```mermaid
 flowchart LR
-    A[ArticleController@store] --> B{Validate Request}
+    A["ArticleController@store"] --> B{Validate Request}
     B -- Valid --> C[Extract TipTap JSON]
     B -- Invalid --> X[Return Errors]
     C --> D[Handle Image Uploads]
