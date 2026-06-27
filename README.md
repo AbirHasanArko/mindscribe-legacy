@@ -57,6 +57,222 @@ A dedicated local scope pipeline queries the database.
 
 ---
 
+## 📊 Architecture & Diagrams
+
+<details>
+<summary><strong>1. Entity-Relationship (ER) Diagram</strong></summary>
+
+```mermaid
+erDiagram
+    USERS ||--o{ ARTICLES : creates
+    USERS ||--o{ COMMENTS : writes
+    USERS ||--o{ RATINGS : submits
+    ARTICLES ||--o{ COMMENTS : contains
+    ARTICLES ||--o{ RATINGS : receives
+    ARTICLES ||--o{ ARTICLE_GENRE : categorizes
+    GENRES ||--o{ ARTICLE_GENRE : categorizes
+
+    USERS {
+        bigint id PK
+        string name
+        string email
+        string password
+        string avatar
+        text bio
+    }
+    ARTICLES {
+        bigint id PK
+        bigint user_id FK
+        string title
+        text excerpt
+        string banner_url
+        json content_json
+        string status
+    }
+    GENRES {
+        bigint id PK
+        string name
+        string slug
+    }
+    COMMENTS {
+        bigint id PK
+        bigint user_id FK
+        bigint article_id FK
+        text body
+    }
+    RATINGS {
+        bigint id PK
+        bigint user_id FK
+        bigint article_id FK
+        integer score
+    }
+```
+</details>
+
+<details>
+<summary><strong>2. Component Architecture Diagram</strong></summary>
+
+```mermaid
+flowchart TB
+    subgraph Frontend [Vue.js 3 / Inertia]
+        UI[User Interface]
+        Pages[Pages & Components]
+        UI --> Pages
+    end
+
+    subgraph Backend [Laravel 13]
+        Routes[Web/API Routes]
+        Controllers[HTTP Controllers]
+        Models[Eloquent Models]
+        Pages -- Inertia Requests --> Routes
+        Routes --> Controllers
+        Controllers --> Models
+    end
+
+    subgraph Storage [Persistent Storage]
+        DB[(SQLite WAL Database)]
+        Files[Local File Storage]
+        Models --> DB
+        Controllers --> Files
+    end
+```
+</details>
+
+<details>
+<summary><strong>3. Sequence Diagram (Article Fetching)</strong></summary>
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant Browser as Vue/Inertia
+    participant Route as Laravel Router
+    participant Controller as PublicController
+    participant DB as SQLite DB
+
+    User->>Browser: Clicks Article Card
+    Browser->>Route: GET /articles/{id} (Inertia XHR)
+    Route->>Controller: Route to show()
+    Controller->>DB: Query Article + Eager Load (Comments/Ratings/Author)
+    DB-->>Controller: Return Model Collection
+    Controller-->>Browser: Return Inertia::render payload
+    Browser-->>User: Renders Article/Show.vue Page
+```
+</details>
+
+<details>
+<summary><strong>4. Use-Case Diagram</strong></summary>
+
+```mermaid
+flowchart LR
+    Guest((Guest User))
+    Author((Authenticated Author))
+    
+    Guest --> View[Browse & Read Articles]
+    Guest --> Search[Search & Filter by Genre]
+    
+    Author --> View
+    Author --> Search
+    Author --> Draft[Draft & Publish Articles]
+    Author --> Upload[Upload Cover & In-body Media]
+    Author --> Interact[Comment & Rate Articles]
+    Author --> Profile[Manage Profile & Theme]
+```
+</details>
+
+<details>
+<summary><strong>5. Activity Diagram (Article Publishing Flow)</strong></summary>
+
+```mermaid
+stateDiagram-v2
+    [*] --> DraftMode: Create New Article
+    DraftMode --> Writing: Type content in TipTap
+    Writing --> Uploading: Drag & Drop Image
+    Uploading --> Writing: Image Embedded
+    Writing --> AutoSave: 500ms debounce
+    AutoSave --> Writing
+    Writing --> Review: Click Publish
+    Review --> Published: Validations Pass
+    Review --> Writing: Validation Errors
+    Published --> [*]
+```
+</details>
+
+<details>
+<summary><strong>6. Deployment & Infrastructure Diagram</strong></summary>
+
+```mermaid
+flowchart TD
+    node1((Client Device))
+    
+    subgraph Host [Local Environment / Server]
+        server[Nginx / Apache / Artisan]
+        php[PHP 8.2+ FPM]
+        
+        subgraph Storage Layer
+            sqlite[(SQLite Database)]
+            fs[Local Filesystem]
+        end
+    end
+    
+    node1 -- HTTP / HTTPS --> server
+    server -- FastCGI --> php
+    php -- PDO --> sqlite
+    php -- Storage Facade --> fs
+```
+</details>
+
+<details>
+<summary><strong>7. Package / Class Diagram</strong></summary>
+
+```mermaid
+classDiagram
+    class ArticleController {
+        +index()
+        +create()
+        +store(Request)
+        +edit(Article)
+        +update(Request, Article)
+        +destroy(Article)
+    }
+    class CommentController {
+        +store(Request)
+        +destroy(Comment)
+    }
+    class RatingController {
+        +upsert(Request)
+    }
+    class Article {
+        +scopeFilter()
+        +author()
+        +genres()
+        +comments()
+        +ratings()
+    }
+    
+    ArticleController ..> Article : Manages
+    CommentController ..> Article : Attaches
+    RatingController ..> Article : Attaches
+```
+</details>
+
+<details>
+<summary><strong>8. Function / Collaboration Diagram (Store Article)</strong></summary>
+
+```mermaid
+flowchart LR
+    A[ArticleController@store] --> B{Validate Request}
+    B -- Valid --> C[Extract TipTap JSON]
+    B -- Invalid --> X[Return Errors]
+    C --> D[Handle Image Uploads]
+    D --> E[Save to Local Storage]
+    E --> F[Create Article Record]
+    F --> G[Attach Genre IDs]
+    G --> H[Redirect to Dashboard]
+```
+</details>
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Backend:** [Laravel 13](https://laravel.com/) (PHP) for robust routing, Eloquent ORM, and secure API delivery.
