@@ -2,6 +2,56 @@
 
 This document outlines the Git branching and commit commands for each team role, based on the Sprint Schedule and User Stories defined for MindScribe. All commands strictly adhere to the Jira Smart Commit protocol and Branching naming conventions.
 
+---
+
+## 🌿 Core Git Workflow Guide
+
+We strictly adhere to a Feature Branch Workflow. **Do not commit directly to the `main` branch.**
+
+Repository URL: `https://github.com/AbirHasanArko/MindScribe` (or `mindscribe-legacy`)
+
+### 1. Pull the Latest Changes
+Always start by ensuring your local `main` branch is up to date:
+```bash
+git checkout main
+git pull origin main
+```
+
+### 2. Create a Feature Branch
+Create a branch using the exact Jira Issue ID and a short descriptor:
+```bash
+git checkout -b feature/MS-5-session-fix
+```
+
+### 3. Stage ONLY Necessary Files
+Avoid using `git add .` as it can stage unintended configuration files. Explicitly target the files you worked on:
+```bash
+git add app/Http/Controllers/Auth/AuthenticatedSessionController.php routes/auth.php
+```
+
+### 4. Write a Jira Smart Commit
+Your commit message must begin with the Issue ID and an imperative verb. Use a multi-line commit to explain the details. Append `#done` if the task is complete.
+```bash
+git commit -m "MS-5: configure User Login authentication logic #done
+
+- Handled secure login sessions using Laravel Breeze
+- Added rate limiting to prevent brute force attacks"
+```
+
+### 5. Push Your Branch
+Push your newly created feature branch to the remote repository:
+```bash
+git push -u origin feature/MS-5-session-fix
+```
+
+### 6. Create a Pull Request (PR)
+Go to GitHub and open a PR from `feature/MS-5-session-fix` to `main`. Once QA and the Scrum Master approve, it will be merged!
+
+---
+
+## Role-Specific Command Matrix
+
+
 ## 👨‍💻 Back-end Developer
 **Focus:** Laravel app logic, Eloquent models, authentication, SQLite database, storage, API endpoints.
 
