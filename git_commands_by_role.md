@@ -4,32 +4,39 @@ This document outlines the Git branching and commit commands for each team role,
 
 ---
 
-## 🌿 Core Git Workflow Guide
+## 🌿 Core Git Workflow Guide (Full Lifecycle)
 
 We strictly adhere to a Feature Branch Workflow. **Do not commit directly to the `main` branch.**
 
 Repository URL: `https://github.com/AbirHasanArko/MindScribe` (or `mindscribe-legacy`)
 
-### 1. Pull the Latest Changes
-Always start by ensuring your local `main` branch is up to date:
+### 1. Clone the Repository
+If you are starting fresh, clone the repository to your local machine and navigate into the project directory:
+```bash
+git clone https://github.com/AbirHasanArko/MindScribe.git
+cd MindScribe
+```
+
+### 2. Pull the Latest Changes
+If you already have the repository cloned, always ensure your local `main` branch is fully up to date before starting new work:
 ```bash
 git checkout main
 git pull origin main
 ```
 
-### 2. Create a Feature Branch
-Create a branch using the exact Jira Issue ID and a short descriptor:
+### 3. Create a Feature Branch
+Create and switch to a new branch using the exact Jira Issue ID and a short descriptor:
 ```bash
 git checkout -b feature/MS-5-session-fix
 ```
 
-### 3. Stage ONLY Necessary Files
-Avoid using `git add .` as it can stage unintended configuration files. Explicitly target the files you worked on:
+### 4. Stage ONLY Necessary Files
+Avoid using `git add .` as it can stage unintended configuration files. Explicitly target the files you modified or created for this specific task:
 ```bash
 git add app/Http/Controllers/Auth/AuthenticatedSessionController.php routes/auth.php
 ```
 
-### 4. Write a Jira Smart Commit
+### 5. Write a Jira Smart Commit
 Your commit message must begin with the Issue ID and an imperative verb. Use a multi-line commit to explain the details. Append `#done` if the task is complete.
 ```bash
 git commit -m "MS-5: configure User Login authentication logic #done
@@ -38,14 +45,27 @@ git commit -m "MS-5: configure User Login authentication logic #done
 - Added rate limiting to prevent brute force attacks"
 ```
 
-### 5. Push Your Branch
-Push your newly created feature branch to the remote repository:
+### 6. Push Your Branch
+Push your newly created feature branch to the remote repository so it is backed up and visible to the team:
 ```bash
 git push -u origin feature/MS-5-session-fix
 ```
 
-### 6. Create a Pull Request (PR)
-Go to GitHub and open a PR from `feature/MS-5-session-fix` to `main`. Once QA and the Scrum Master approve, it will be merged!
+### 7. Create and Merge a Pull Request (PR)
+1. Go to your repository on GitHub.
+2. Click **Compare & pull request** next to your recently pushed branch.
+3. Ensure the base branch is `main` and the compare branch is `feature/MS-5-session-fix`.
+4. Add a description outlining your changes and request a review from QA or the Scrum Master.
+5. Once approved, click **Merge pull request** to merge your code into `main`.
+
+### 8. Cleanup After Merging
+After your branch is successfully merged on GitHub, delete it locally and remotely to keep the repository clean:
+```bash
+git checkout main
+git pull origin main
+git branch -d feature/MS-5-session-fix
+git push origin --delete feature/MS-5-session-fix
+```
 
 ---
 
