@@ -213,7 +213,7 @@ git commit -m "MS-8: fix layout matrix inconsistencies in editor workspace #done
 
 ```bash
 git checkout -b task/MS-0-agile-documentation
-git add README.md git_commands_by_role.md
+git add README.md git_commands_by_role.md Agile_Scrum_Project_MindScribe.xlsx
 git commit -m "MS-0: update project documentation with Sprint Schedule and Scope breakdown #done
 
 - Outlined explicit Back-end, Front-end, and QA responsibilities
