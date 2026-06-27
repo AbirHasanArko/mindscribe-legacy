@@ -6,7 +6,7 @@
 
 <p align="center">
   <strong>A premium, dynamic content authoring and discovery platform.</strong><br>
-  Built with Laravel 11, Vue.js 3 (Inertia), Tailwind CSS, and TipTap.
+  Built with Laravel 13, Vue.js 3 (Inertia), Tailwind CSS, and TipTap.
 </p>
 
 ---
@@ -23,7 +23,7 @@
 
 ## 🛠️ Tech Stack
 
-- **Backend:** [Laravel 11](https://laravel.com/) (PHP)
+- **Backend:** [Laravel 13](https://laravel.com/) (PHP)
 - **Frontend:** [Vue.js 3](https://vuejs.org/) (Composition API) + [Inertia.js](https://inertiajs.com/)
 - **Styling:** [Tailwind CSS 3](https://tailwindcss.com/)
 - **Editor:** [TipTap](https://tiptap.dev/) (ProseMirror-based headless editor)
