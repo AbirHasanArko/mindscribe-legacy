@@ -284,10 +284,11 @@ git commit -m "MS-8: fix layout matrix inconsistencies in editor workspace #done
 ```bash
 git checkout -b task/MS-0-agile-documentation
 git add README.md git_commands_by_role.md Agile_Scrum_Project_MindScribe.xlsx
-git commit -m "MS-0: update project documentation with Sprint Schedule and Scope breakdown #done
+git commit -m "MS-0: upgrade project documentation with state-of-the-art Mermaid architecture diagrams and Agile workflows #done
 
-- Outlined explicit Back-end, Front-end, and QA responsibilities
-- Listed full Sprint timetable and associated story points
-- Detailed Git Commit and Branching procedural rules
-- Embedded quick-start local environment guide"
+- Designed 8 comprehensive Mermaid.js architecture and data-flow diagrams
+- Embedded the official Agile Scrum Sprint Schedule (.xlsx) documentation
+- Formatted a full 8-step Git lifecycle masterclass (Clone -> Merge)
+- Detailed specific branch naming and Jira Smart Commit protocols
+- Established explicit technical responsibilities for Backend, Frontend, and QA"
 ```
